@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>历朝古都</title>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.20/"></script>
+
+    <script>
+
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/GraphicsLayer",
+            "esri/symbols/SimpleFillSymbol",
+            "esri/layers/FeatureLayer",
+            "esri/layers/GeoJSONLayer",
+            "esri/PopupTemplate",
+			"esri/Graphic",
+			"esri/views/SceneView",
+			"esri/widgets/BasemapGallery",
+			"esri/widgets/Search"
+        ], (
+            Map,
+            MapView,
+            GraphicsLayer,
+            SimpleFillSymbol,
+            FeatureLayer,
+            GeoJSONLayer,
+            PT,
+			Graphic,
+			SceneView,
+			BasemapGallery,
+			Search
+        ) => {
+			const map = new Map({
+			    basemap: "topo-vector"
+				//basemap: "gray-vector"
+			});
+			
+
+
+            var view = new MapView({
+                container: "viewDiv",
+                map: map,
+                zoom: 4,
+                center: [108.848801,34.533316] // longitude, latitude
+            });
+			var basemapGallery = new BasemapGallery({
+				view: view
+			});
+			view.ui.add(basemapGallery, {
+				position: "top-right"
+			});
+
+			var searchWidget = new Search({
+				view: view
+			});
+
+			// Add the search widget to the top right corner of the view
+			view.ui.add(searchWidget, {
+				position: "bottom-right"
+			});
+
+			const point1 = { //Create a point
+				type: "point",
+				longitude: 116.515476,
+				latitude: 39.963298
+			};
+			const attributes1 = {
+				Name: "北京",
+				Description: "金、元、明、清都曾建都于此。"
+			};
+			
+			const point2 = { //Create a point
+				type: "point",
+				longitude: 108.947615,
+				latitude: 34.3487
+			};
+			const attributes2 = {
+				Name: "西安",
+				Description: "西周、西汉、前秦、唐都曾建都于此。"
+			};
+			const point3 = { //Create a point
+				type: "point",
+				longitude: 112.461724,
+				latitude: 34.623789
+			};
+			const attributes3 = {
+				Name: "洛阳",
+				Description: "东周、东汉、隋等都曾建都于此。"
+			};
+			
+			const point4 = { //Create a point
+				type: "point",
+				longitude: 114.317892,
+				latitude: 34.805436
+			};
+			const attributes4 = {
+				Name: "开封",
+				Description: "后汉、后周、北宋都曾建都于此。"
+			};
+			
+			const point5 = { //Create a point
+				type: "point",
+				longitude: 118.800122,
+				latitude: 32.06661
+			};
+			const attributes5 = {
+				Name: "南京",
+				Description: "南朝宋齐梁陈都曾建都于此。"
+			};
+			
+			const point6 = { //Create a point
+				type: "point",
+				longitude: 120.213785,
+				latitude: 30.252084
+			};
+			const attributes6 = {
+				Name: "杭州",
+				Description: "南宋曾建都于此。"
+			};
+			const simpleMarkerSymbol = {
+				type: "simple-marker",
+				color: [100, 119, 40],  // Orange
+				outline: {
+					color: [255, 255, 255], // White
+					width: 1
+				}
+			};
+			const popupTemplate = {
+				title: "{Name}",
+				content: "{Description}"
+			}
+			
+			const pointGraphic1 = new Graphic({
+				geometry: point1,
+				attributes: attributes1,
+				symbol: simpleMarkerSymbol,
+				popupTemplate: popupTemplate
+			});
+			const pointGraphic2 = new Graphic({
+				geometry: point2,
+				attributes: attributes2,
+				symbol: simpleMarkerSymbol,
+				popupTemplate: popupTemplate
+			});
+			const pointGraphic3 = new Graphic({
+				geometry: point3,
+				attributes: attributes3,
+				symbol: simpleMarkerSymbol,
+				popupTemplate: popupTemplate
+			});
+			const pointGraphic4 = new Graphic({
+				geometry: point4,
+				attributes: attributes4,
+				symbol: simpleMarkerSymbol,
+				popupTemplate: popupTemplate
+			});
+			const pointGraphic5 = new Graphic({
+				geometry: point5,
+				attributes: attributes5,
+				symbol: simpleMarkerSymbol,
+				popupTemplate: popupTemplate
+			});
+			const pointGraphic6 = new Graphic({
+				geometry: point6,
+				attributes: attributes6,
+				symbol: simpleMarkerSymbol,
+				popupTemplate: popupTemplate
+			});
+
+			const gl = new GeoJSONLayer({
+			    url:"https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json"
+			});
+			
+			gl.popupTemplate = new PT({
+			    title: "{name}",
+			    content:"点击了{name},行政区代码是{adcode}"
+			});
+			map.add(gl);
+			
+			
+			const glayer = new GraphicsLayer();
+			map.add(glayer);
+			glayer.add(pointGraphic1);
+			glayer.add(pointGraphic2);
+			glayer.add(pointGraphic3);
+			glayer.add(pointGraphic4);
+			glayer.add(pointGraphic5);
+			glayer.add(pointGraphic6);
+// 			view.on("click", function (evt) {
+// 			    qTask.execute(
+// 			        {
+// 			            returnGeometry: true,
+// 			            outFields: ["*"],
+// 			            geometry: evt.mapPoint,
+// 			            spatialRelationship: "intersects"
+// 			        }
+// 			    ).then(function (result) {
+// 			
+// 			        var sym = new SimpleFillSymbol({
+// 			            color: [100, 50, 204, 0.6],
+// 			            style: "forward-diagonal"
+// 			        });
+// 			
+// 			        var sym2 = {
+// 			            type: "simple-fill",
+// 			            color: [100, 50, 204, 0.6],
+// 			            style: "diagonal-cross"
+// 			        };
+// 			
+// 			        const popupTemplate = {
+// 			            title: "{Name}",
+// 			            content: "{Description}"
+// 			        };
+// 			        result.features[0].symbol = sym2;
+// 			        glayer.add(result.features[0]);
+// 			
+// 			    });
+// 			
+// 			
+// 			});
+
+        });
+    </script>
+</head>
+
+<body>
+    <div id="viewDiv"></div>
+</body>
+
+</html>
