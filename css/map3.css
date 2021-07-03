@@ -1,0 +1,53 @@
+html,
+body {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+    }
+#layer {
+	top: 20px;
+	right: 20px;
+	position: absolute;
+	z-index: 99;
+	background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+	border-radius: 8px;
+	padding: 10px;
+	opacity: 0.85;
+}
+#basemap {
+	top: 140px;
+	right: 20px;
+	position: absolute;
+	z-index: 99;
+	background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+	//background-image: linear-gradient(to top, lightgrey 0%, lightgrey 1%, #e0e0e0 26%, #efefef 48%, #d9d9d9 75%, #bcbcbc 100%);
+	border-radius: 8px;
+	padding: 10px;
+	opacity: 0.85;
+}
+#swipeToggle {
+	top: 240px;
+	right: 20px;
+	position: absolute;
+	z-index: 99;
+	background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
+	border-radius: 8px;
+	padding: 10px;
+	opacity: 0.85;
+}
+#viewDiv{
+	left:0;
+	padding:0;
+	margin:0;
+	height:100%;
+	width:50%;
+}
+#view2Div{
+	position: absolute;
+	top:0px;
+	right:0px;
+	padding:0;
+	margin:0;
+	height: 100%;
+	width: 50%;
+}
